@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   take_input.c                                       :+:      :+:    :+:   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lstarek <lstarek@student.42vienna.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,62 +12,68 @@
 
 #include "push_swap.h"
 
-void	print_final_product(t_stack a, t_stack b)
+void	push_swap(t_stack a, t_stack b)
+{
+	if (contain_duplicates(a))
+		return ;
+	if (a.size <= 3)
+		return (tiny_sort(&a));
+	else if (a.size <= 50)
+		return (selection_sort(&a, &b));
+	return (radix_sort(&a, &b));
+}
+
+int	parse_input(int size, char **nums, t_stack *a, t_stack *b)
 {
 	int	i;
 
+	a->content = ft_calloc((size - 1), sizeof(int));
+	a->max_size = size - 1;
+	a->size = size - 1;
+	b->content = ft_calloc((size - 1), sizeof(int));
+	b->max_size = size - 1;
+	b->size = 0;
 	i = 0;
-	ft_printf("\na: ");
-	while (i < a.max_size)
+	a->is_helper = 0;
+	b->is_helper = 0;
+	while (i < size - 1)
 	{
-		ft_putnbr_fd(a.content[i], 1);
-		ft_putstr_fd(", ", 1);
+		if (nums[size - i - 1])
+		{
+			if (!(is_number(nums[size - i - 1])))
+				return (0);
+			a->content[i] = ft_atoi(nums[size - i - 1]);
+		}
 		i++;
 	}
-	ft_printf("  size: %d\nb: ", a.size);
-	i = 0;
-	while (i < b.max_size)
-	{
-		ft_putnbr_fd(b.content[i], 1);
-		ft_putstr_fd(", ", 1);
-		i++;
-	}
-	ft_printf("  size: %d", b.size);
-}
-
-void	push_swap(t_stack a, t_stack b)
-{
-	if (VERBOSE)
-		print_final_product(a, b);
-	return ;
+	return (1);
 }
 
 int	main(int ac, char **av)
 {
 	t_stack	a;
-	t_stack b;
-	int	i;
+	t_stack	b;
+	int		valid;
+	char	*temp;
+	char	**nums;
 
 	if (ac == 1)
-		return (ft_printf("Error\n"), 0);
-	if (ac == 2)
 		return (0);
-	a.content = ft_calloc((ac - 1), sizeof(int));
-	a.max_size = ac - 1;
-	a.size = ac - 1;
-	b.content = ft_calloc((ac - 1), sizeof(int));
-	b.max_size = ac - 1;
-	b.size = 0;
-	i = 0;
-	while (i < a.max_size)
+	if (ac == 2 && ft_strchr(av[1], ' ') == NULL)
+		return (0);
+	else if (ac == 2 && ft_strchr(av[1], ' ') != NULL)
 	{
-		a.content[i] = ft_atoi(av[i + 1]);
-		i++;
+		temp = ft_strjoin("test ", av[1]);
+		nums = ft_split(temp, ' ');
+		valid = parse_input(textlen(nums), nums, &a, &b);
+		free(temp);
+		free_str(nums);
 	}
-	pb(&a,&b);
-	pb(&a,&b);
-	ss(&a,&b);
-	push_swap(a, b);
-	free(a.content);
-	free(b.content);
+	else
+		valid = parse_input(ac, av, &a, &b);
+	if (valid)
+		push_swap(a, b);
+	else
+		ft_printf("Error\n");
+	return (free(a.content), free(b.content), 0);
 }

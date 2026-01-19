@@ -1,11 +1,12 @@
 NAME = push_swap
 LIBNAME = libft/libft.a
 
-CFLAGGEN = -Wall -Wextra -Werror -g
+CFLAGGEN = -Wall -Wextra -Werror
 
 CC = cc
 
-QUELLE_DATEIEN = general.c functionality.c instructions1.c instructions2.c instructions3.c push_swap.c
+QUELLE_DATEIEN = instructions/general.c instructions/functionality.c instructions/instructions1.c instructions/instructions2.c instructions/instructions3.c instructions/instructions_radix.c\
+	sorting/sorting_utils.c sorting/sorting.c push_swap_utils.c push_swap.c
 
 OBJEKT_DATEIEN = $(QUELLE_DATEIEN:.c=.o)
 
