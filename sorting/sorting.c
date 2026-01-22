@@ -73,10 +73,14 @@ void	make_index(t_stack *indexes, t_stack src, t_stack *b)
 	int			i;
 
 	indexes->content = ft_calloc(src.max_size, sizeof(int));
+	if (!indexes->content)
+		return ;
 	indexes->max_size = src.max_size;
 	indexes->size = src.max_size;
 	indexes->is_helper = 1;
 	b->content = ft_calloc(src.max_size, sizeof(int));
+	if (!b->content)
+		return ;
 	b->max_size = src.max_size;
 	b->size = 0;
 	b->is_helper = 1;
@@ -100,7 +104,7 @@ void	radix_sort(t_stack *a, t_stack *b)
 
 	n = 0;
 	make_index(&a_i, *a, &b_i);
-	while (!(is_sorted(*a)))
+	while ((!(is_sorted(*a))) && a_i.content && b_i.content)
 	{
 		i = 0;
 		while (i < a->max_size)
