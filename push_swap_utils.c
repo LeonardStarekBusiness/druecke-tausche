@@ -27,6 +27,8 @@ void	free_str(char **str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return ;
 	while (str[i])
 	{
 		free(str[i]);
@@ -40,12 +42,10 @@ int	contain_duplicates(t_stack pile)
 {
 	int	i;
 	int	n;
-	int	comparer;
 
 	i = 0;
 	while (i < pile.size)
 	{
-		comparer = pile.content[i];
 		n = i - 1;
 		while (n >= 0)
 		{

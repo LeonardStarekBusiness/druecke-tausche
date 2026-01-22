@@ -57,23 +57,22 @@ int	main(int ac, char **av)
 	char	*temp;
 	char	**nums;
 
-	if (ac == 1)
-		return (0);
-	if (ac == 2 && ft_strchr(av[1], ' ') == NULL)
-		return (0);
-	else if (ac == 2 && ft_strchr(av[1], ' ') != NULL)
+	if (ac == 2 && ft_strchr(av[1], ' ') != NULL)
 	{
 		temp = ft_strjoin("test ", av[1]);
+		if (!temp)
+			return (0);
 		nums = ft_split(temp, ' ');
+		if (!nums || !nums[1] || !nums[2])
+			return (free(temp), free_str(nums), 0);
 		valid = parse_input(textlen(nums), nums, &a, &b);
 		free(temp);
 		free_str(nums);
 	}
-	else
+	else if (ac > 2)
 		valid = parse_input(ac, av, &a, &b);
-	if (valid)
-		push_swap(a, b);
+	if (ac >= 2 && valid)
+		return (push_swap(a, b), free(a.content), free(b.content), 0);
 	else
-		ft_printf("Error\n");
-	return (free(a.content), free(b.content), 0);
+		return (ft_printf("Error\n"), free(a.content), free(b.content), 0);
 }
